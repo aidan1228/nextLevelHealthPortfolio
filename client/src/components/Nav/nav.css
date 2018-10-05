@@ -1,0 +1,62 @@
+.our-nav {
+	background: grey;
+	width: 100%;
+	height: 50px;
+}
+
+.more-nav {
+	background: blue;
+	opacity: 0.1;
+	height: 100px;
+	/*display: none;*/
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+
+.menu-icon {
+	height: 40px;
+	width: 20px;
+	display: inline;
+	position: relative;
+	/*top: 2px;
+	left: 2px;*/
+}
+
+.material-icons {
+	position: relative;
+	left: 10px;
+	top: 12px;
+	display: inline;
+	color: rgba(105, 11, 142, 0.5);
+}
+
+.material-icons:hover {
+	/*border: 2px solid rgba(105, 11, 142, 0.2);*/
+}
+
+.logged-in {
+	width: 60px;
+	height: 30px;
+	display: inline;
+	position: relative;
+	left: 5%;
+	top: 10px;
+	color: silver;
+}
+
+.get-that-logo {
+	height: 30px;
+	width: 30px;
+	display: inline;
+}
+
+.budget {
+	height: 25px;
+	width: 80px;
+	display: inline;
+	color: silver;
+	position: relative;
+	top: 10px;
+	left: 60%;
+}
+
