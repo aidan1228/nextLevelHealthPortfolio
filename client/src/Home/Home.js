@@ -5,7 +5,7 @@ import { Col, Row, Container } from "../components/Grid";
 import Search from "../components/Search";
 import Results from "../components/Results";
 import DailyTable from "../components/DailyTable";
-// import axios from "axios";
+
 
 var caloriesDaily = 0;
 var sodiumDaily = 0;
@@ -26,90 +26,79 @@ class Home extends Component {
     
   };
 
-  // searchNutritionix = query =>{
-  //   axios.post("https://api.nutritionix.com/v1_1/search", 
-  //     {
-  //         "appId": "e9a7abab",
-  //         "appKey": "0317c2e6f364bedfefb7d162aa830611",
-  //         "query": query,
-  //         "contentType": "application/json",
-  //         "filters": {
-  //           "not": {
-  //               "item_type": 2
-  //           }
-  //         }
-  //     }
-  //   ).then(res => { 
-  //       // console.log(res);
-  //       var foodItemId = res.data.hits[0]._id;
-  //       // var foodItemName = res.data.hits[0].fields.item_name;
-  //       // console.log(foodItemName);
-  //       // console.log(foodItemId);
+  searchNutritionix = query =>{
+    API.searchAPIPost(query)
+    .then(res => { 
+        // console.log(res);
+        var foodItemId = res.data.hits[0]._id;
+        // var foodItemName = res.data.hits[0].fields.item_name;
+        // console.log(foodItemName);
+        // console.log(foodItemId);
 
-  //       var getURL = "https://api.nutritionix.com/v2/item/" + foodItemId + "?appId=e9a7abab&appKey=d76830f8477da39c6c738320d221e4d1";
+        var getURL = "https://api.nutritionix.com/v2/item/" + foodItemId + "?appId=e9a7abab&appKey=d76830f8477da39c6c738320d221e4d1";
 
-  //       return axios.get(query)})
-  //       .then(function (res) {
-  //         console.log(res);
-  //         function calories() {
-  //           for (var i = 0; i < res.data.label.nutrients.length; i++) {
-  //               if (res.data.label.nutrients[i].usda_tag === "ENERC_KCAL") {
-  //                   var caloriesVal = res.data.label.nutrients[i].value;
-  //                   // console.log(caloriesVal);
-  //                   return caloriesVal
-  //               }
-  //           }
-  //         };
+        return API.searchAPIGet(getURL)})
+        .then(function (res) {
+          console.log(res);
+          function calories() {
+            for (var i = 0; i < res.data.label.nutrients.length; i++) {
+                if (res.data.label.nutrients[i].usda_tag === "ENERC_KCAL") {
+                    var caloriesVal = res.data.label.nutrients[i].value;
+                    // console.log(caloriesVal);
+                    return caloriesVal
+                }
+            }
+          };
   
-  //         function sugar() {
-  //           for (var i = 0; i < res.data.label.nutrients.length; i++) {
-  //               if (res.data.label.nutrients[i].usda_tag === "SUGAR") {
-  //                   var sugarVal = res.data.label.nutrients[i].value;
-  //                   // console.log(caloriesVal);
-  //                   return sugarVal
-  //               }
-  //           }
-  //         };
+          function sugar() {
+            for (var i = 0; i < res.data.label.nutrients.length; i++) {
+                if (res.data.label.nutrients[i].usda_tag === "SUGAR") {
+                    var sugarVal = res.data.label.nutrients[i].value;
+                    // console.log(caloriesVal);
+                    return sugarVal
+                }
+            }
+          };
   
-  //         function protein() {
-  //           for (var i = 0; i < res.data.label.nutrients.length; i++) {
-  //               if (res.data.label.nutrients[i].usda_tag === "PROCNT") {
-  //                   var proteinVal = res.data.label.nutrients[i].value;
-  //                   // console.log(caloriesVal);
-  //                   return proteinVal
-  //               }
-  //           }
-  //         };
+          function protein() {
+            for (var i = 0; i < res.data.label.nutrients.length; i++) {
+                if (res.data.label.nutrients[i].usda_tag === "PROCNT") {
+                    var proteinVal = res.data.label.nutrients[i].value;
+                    // console.log(caloriesVal);
+                    return proteinVal
+                }
+            }
+          };
           
-  //         function sodium() {
-  //           for (var i = 0; i < res.data.label.nutrients.length; i++) {
-  //               if (res.data.label.nutrients[i].usda_tag === "NA") {
-  //                   var sodiumVal = res.data.label.nutrients[i].value;
-  //                   // console.log(caloriesVal);
-  //                   return sodiumVal
-  //               }
-  //           }
-  //         };
+          function sodium() {
+            for (var i = 0; i < res.data.label.nutrients.length; i++) {
+                if (res.data.label.nutrients[i].usda_tag === "NA") {
+                    var sodiumVal = res.data.label.nutrients[i].value;
+                    // console.log(caloriesVal);
+                    return sodiumVal
+                }
+            }
+          };
           
-  //         var name = res.data.name;
-  //         var cal = calories();
-  //         var sod = sodium();
-  //         var sug = sugar();
-  //         var prot = protein();
+          var name = res.data.name;
+          var cal = calories();
+          var sod = sodium();
+          var sug = sugar();
+          var prot = protein();
 
-  //         var dataObj = {
-  //           name: name,
-  //           cal: cal,
-  //           sod: sod,
-  //           sug: sug,
-  //           prot: prot
-  //         }
-  //         // console.log(dataObj);
-  //         return dataObj;
-  //       })
-  //       .then(res => this.setState({ result: res }))
-  //       .catch(err => console.log(err));
-  // }; 
+          var dataObj = {
+            name: name,
+            cal: cal,
+            sod: sod,
+            sug: sug,
+            prot: prot
+          }
+          console.log(dataObj);
+          return dataObj;
+        })
+        .then(res => this.setState({ result: res }))
+        .catch(err => console.log(err));
+  }; 
 
   handleDataSave = event => {
     event.preventDefault();
@@ -148,9 +137,9 @@ class Home extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    // if (this.state.search) {
-      // this.searchNutritionix(this.state.search);
-    // }
+    if (this.state.search) {
+      this.searchNutritionix(this.state.search);
+    }
   };
 
   // handleMongoUpdate = event => {
@@ -201,11 +190,11 @@ class Home extends Component {
     //   })
           // .then(res => console.log(this.state.userData))
           // .catch(err => console.log(err));
-        // API.saveDate(dateData)
-        // .then(function (response) {
-        //   console.log(response);
-        // })
-        // .catch(err => console.log(err));
+        API.saveDate(dateData)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(err => console.log(err));
   };
 
   login() {

@@ -1,9 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const DailyTable = props => (
-  <div class="panel-body" id="pMargin">
-    <table class="table table-hover" id='user-table'>
+  <div className="panel-body" id="pMargin">
+    <table className="table table-hover" id='user-table'>
       <thead>
           <tr>
               <th>Date</th>
