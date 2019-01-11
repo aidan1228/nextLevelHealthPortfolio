@@ -2,7 +2,7 @@ Arguments:
   C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js start
 
 PATH: 
-  C:\Users\Username\AppData\Roaming\Python35\Scripts;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\MongoDB\Server\3.6\bin;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\nodejs\;C:\Users\Aidan\AppData\Local\Programs\Python\Python35\Scripts\;C:\Users\Aidan\AppData\Local\Programs\Python\Python35\;C:\Users\Username\AppData\Roaming\Python35\Scripts;C:\Ruby24-x64\bin;C:\Users\Aidan\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Heroku\bin;C:\Program Files\Microsoft VS Code\bin;C:\Users\Aidan\AppData\Local\Yarn\bin;C:\Users\Aidan\AppData\Roaming\npm
+  C:\Users\Aidan\bin;C:\Program Files (x86)\Git\mingw32\bin;C:\Program Files (x86)\Git\usr\local\bin;C:\Program Files (x86)\Git\usr\bin;C:\Program Files (x86)\Git\usr\bin;C:\Program Files (x86)\Git\mingw32\bin;C:\Program Files (x86)\Git\usr\bin;C:\Users\Aidan\bin;C:\Users\Username\AppData\Roaming\Python35\Scripts;C:\Program Files (x86)\Intel\iCLS Client;C:\Program Files\Intel\iCLS Client;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Git\cmd;C:\Program Files (x86)\Yarn\bin;C:\Program Files\MongoDB\Server\3.6\bin;C:\WINDOWS\System32\OpenSSH;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\Program Files\nodejs;C:\Users\Aidan\AppData\Local\Programs\Python\Python35\Scripts;C:\Users\Aidan\AppData\Local\Programs\Python\Python35;C:\Users\Username\AppData\Roaming\Python35\Scripts;C:\Ruby24-x64\bin;C:\Users\Aidan\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Heroku\bin;C:\Program Files\Microsoft VS Code\bin;C:\Users\Aidan\AppData\Local\Yarn\bin;C:\Users\Aidan\AppData\Roaming\npm;C:\Program Files (x86)\Git\usr\bin\vendor_perl;C:\Program Files (x86)\Git\usr\bin\core_perl
 
 Yarn version: 
   1.5.1
@@ -2418,7 +2418,7 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 1
+  Exit code: 3221225786
   Command: C:\WINDOWS\system32\cmd.exe
   Arguments: /d /s /c concurrently "nodemon server.js" "npm run client"
   Directory: C:\nextLevelHealthPortfolio1\nextLevelHealthPortfolio
