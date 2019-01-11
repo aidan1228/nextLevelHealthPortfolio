@@ -1,3 +1,13 @@
 .btn-margin {
   margin: 7px 3px;
 }
+
+#menu {
+  background: hsla(1,0%,100%,.9);
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  min-height: 100%;
+  padding-top: 80px;
+}

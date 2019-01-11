@@ -1,8 +1,11 @@
 import React from 'react';
 import { Redirect, Route, Router } from 'react-router-dom';
+import Wrapper from './components/Wrapper'
 import App from './App';
 import Home from './Home/Home';
 import Profile from './Profile/Profile';
+import Views from './Views/Views'
+import Log from './Log/Log'
 import Callback from './Callback/Callback';
 import Auth from './Auth/Auth';
 import history from './history';
@@ -18,7 +21,7 @@ const handleAuthentication = ({location}) => {
 export const makeMainRoutes = () => {
   return (
     <Router history={history}>
-        <div>
+        <Wrapper>
           <Route path="/" render={(props) => <App auth={auth} {...props} />} />
           <Route path="/home" render={(props) => <Home auth={auth} {...props} />} />
           <Route path="/profile" render={(props) => (
@@ -28,11 +31,25 @@ export const makeMainRoutes = () => {
               <Profile auth={auth} {...props} />
             )
           )} />
+          <Route path="/views" render={(props) => (
+            !auth.isAuthenticated() ? (
+              <Redirect to="/home"/>
+            ) : (
+              <Views auth={auth} {...props} />
+            )
+          )} />
+          <Route path="/log" render={(props) => (
+            !auth.isAuthenticated() ? (
+              <Redirect to="/home"/>
+            ) : (
+              <Log auth={auth} {...props} />
+            )
+          )} />
           <Route path="/callback" render={(props) => {
             handleAuthentication(props);
             return <Callback {...props} /> 
           }}/>        
-        </div>
+        </Wrapper>
       </Router>
   );
 }

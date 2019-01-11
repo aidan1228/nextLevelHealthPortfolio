@@ -1,29 +1,46 @@
 import React, { Component } from 'react';
-import Jumbotron from "../components/Jumbotron";
 import API from "../utils/api";
+import { Collapse } from 'react-bootstrap';
 import { Col, Row, Container } from "../components/Grid";
 import Search from "../components/Search";
 import Results from "../components/Results";
-import DailyTable from "../components/DailyTable";
-
-
-var caloriesDaily = 0;
-var sodiumDaily = 0;
-var sugarDaily = 0;
-var proteinDaily = 0;
-var date = new Date().toLocaleString().split(',')[0]
+import MealTable from "../components/MealTable";
+import "./Home.css"
 
 class Home extends Component {
 
-  state = {
-    result: {},
-    calculated: {},
-    dateSave: {},
-    search: ""
-  };
+  constructor() {
+    super()
+    this.state = {
+      result: {},
+      mealSummary: {
+        date: new Date().toLocaleString().split(',')[0],
+        cal: 0,
+        sod: 0,
+        sug: 0,
+        prot:0
+      },
+      search: "",
+      mealTitle: "",
+      mealDate: new Date().toLocaleString().split(',')[0],
+      mealItems: [],
+      userId: "",
+      quantity: 1,
+      open: false
+    }
+  }
 
   componentDidMount() {
+    this.props.auth.getEmail(
+			(username, userId) => {
+        this.setState ({
+          username:username,
+          userId: userId
+        });
+			}
+    );
     
+
   };
 
   searchNutritionix = query =>{
@@ -39,13 +56,18 @@ class Home extends Component {
 
         return API.searchAPIGet(getURL)})
         .then(function (res) {
-          console.log(res);
+          console.log("API get data: ", res);
           function calories() {
             for (var i = 0; i < res.data.label.nutrients.length; i++) {
                 if (res.data.label.nutrients[i].usda_tag === "ENERC_KCAL") {
-                    var caloriesVal = res.data.label.nutrients[i].value;
-                    // console.log(caloriesVal);
-                    return caloriesVal
+                  let caloriesVal;
+                  if(res.data.label.nutrients[i].value === null){
+                    caloriesVal = 0;
+                  }
+                  else {
+                    caloriesVal = res.data.label.nutrients[i].value;
+                  }
+                  return caloriesVal;
                 }
             }
           };
@@ -53,9 +75,14 @@ class Home extends Component {
           function sugar() {
             for (var i = 0; i < res.data.label.nutrients.length; i++) {
                 if (res.data.label.nutrients[i].usda_tag === "SUGAR") {
-                    var sugarVal = res.data.label.nutrients[i].value;
-                    // console.log(caloriesVal);
-                    return sugarVal
+                  let sugarVal;
+                    if(res.data.label.nutrients[i].value === null){
+                      sugarVal = 0;
+                    }
+                    else {
+                      sugarVal = res.data.label.nutrients[i].value;
+                    }
+                    return sugarVal;
                 }
             }
           };
@@ -63,9 +90,14 @@ class Home extends Component {
           function protein() {
             for (var i = 0; i < res.data.label.nutrients.length; i++) {
                 if (res.data.label.nutrients[i].usda_tag === "PROCNT") {
-                    var proteinVal = res.data.label.nutrients[i].value;
-                    // console.log(caloriesVal);
-                    return proteinVal
+                  let proteinVal;
+                  if(res.data.label.nutrients[i].value === null){
+                    proteinVal = 0;
+                  }
+                  else {
+                    proteinVal = res.data.label.nutrients[i].value;
+                  }
+                  return proteinVal;
                 }
             }
           };
@@ -73,9 +105,14 @@ class Home extends Component {
           function sodium() {
             for (var i = 0; i < res.data.label.nutrients.length; i++) {
                 if (res.data.label.nutrients[i].usda_tag === "NA") {
-                    var sodiumVal = res.data.label.nutrients[i].value;
-                    // console.log(caloriesVal);
-                    return sodiumVal
+                  let sodiumVal;
+                  if(res.data.label.nutrients[i].value === null){
+                    sodiumVal = 0;
+                  }
+                  else {
+                    sodiumVal = res.data.label.nutrients[i].value;
+                  }
+                  return sodiumVal;
                 }
             }
           };
@@ -88,44 +125,76 @@ class Home extends Component {
 
           var dataObj = {
             name: name,
+            date: new Date().toLocaleString().split(',')[0],
             cal: cal,
             sod: sod,
             sug: sug,
             prot: prot
           }
-          console.log(dataObj);
+          console.log("resulting data object: ", dataObj);
           return dataObj;
         })
         .then(res => this.setState({ result: res }))
         .catch(err => console.log(err));
   }; 
 
-  handleDataSave = event => {
+  addItemToMeal = event => {
     event.preventDefault();
-    this.saveData(this.state.result);
-    // console.log(this.state.calculated);
-  };
-
-  saveData = query => {
-    caloriesDaily += this.state.result.cal;
-    proteinDaily += this.state.result.prot;
-    sodiumDaily += this.state.result.sod;
-    sugarDaily += this.state.result.sug;
-    
-    var dataObj = {
-      date: date,
-      dailyCal: caloriesDaily,
-      dailyPro: proteinDaily,
-      dailySod: sodiumDaily,
-      dailySug: sugarDaily
-    };
-
-    console.log(caloriesDaily, proteinDaily, sodiumDaily, sugarDaily);
-    this.setState({
-      calculated: dataObj
+    this.setState({ mealItems: [...this.state.mealItems, Object.assign({}, this.state.result)]}, () => {
+      this.mealSummary();
     });
-    
+    console.log("mealItems: ", this.state.mealItems);
   };
+
+  handleDelete = id => {
+    event.preventDefault();
+    let mealItems = this.state.mealItems;
+
+    for(var i = 0; i < mealItems.length; i++){
+      if(mealItems[i].name === id) {
+        mealItems.splice(i, 1)
+      }
+    }
+
+    this.setState({ mealItems: mealItems}, () => {
+      this.mealSummary();
+    });
+  };
+
+  handleQuantity = (id) =>{
+    // event.preventDefault();
+    this.setState({quantity: event.target.value});
+    const summary = {
+      date: this.state.mealDate,
+      cal: 0,
+      prot: 0,
+      sod: 0,
+      sug: 0
+    };
+    let mealItems = this.state.mealItems;
+    for(var i = 0; i < mealItems.length; i++){
+      if(mealItems[i].name === id){
+        console.log("quantity: ", this.state.quantity);
+      }
+    }
+  }
+
+  mealSummary = () => {
+    const summary = {
+      date: this.state.mealDate,
+      cal: 0,
+      prot: 0,
+      sod: 0,
+      sug: 0
+    };
+    this.state.mealItems.forEach(mealItem => {
+      summary.cal += mealItem.cal;
+      summary.prot += mealItem.prot;
+      summary.sod += mealItem.sod;
+      summary.sug += mealItem.sug;
+    });
+    this.setState({ mealSummary: summary });
+  }
 
   handleInputChange = event => {
     const value = event.target.value;
@@ -142,115 +211,93 @@ class Home extends Component {
     }
   };
 
-  // handleMongoUpdate = event => {
-  //   event.preventDefault();
+  collapseButton() {
+    this.setState({ open: !this.state.open });
+  };
 
-  //   API.updateDate()
-  // };
-
-  handleSaveToMongo = event => {
+  saveMealData = event => {
     event.preventDefault();
-    
-    var dateData = {
-      date: date,
-      calories: caloriesDaily,
-      protein: proteinDaily,
-      sugar: sugarDaily,
-      sodium: sodiumDaily
-    };
-    console.log(dateData);
 
-    // API.getUserData()
-    //   .then(function (res) {
-    //     if(res.data) {
-    //       for(var i; i < res.data.length; i++) {
-    //       if(dateData.date === res.data[i].date) {
-    //         var updateData = {
-    //           date: date,
-    //           calories: dateData.calories += res.data[i].calories,
-    //           protein: dateData.protein += res.data[i].protein,
-    //           sugar: dateData.sugar += res.data[i].sugar,
-    //           sodium: dateData.sodium += res.data[i].sodium
-    //         }
-    //         API.updateDate(res.data[i].id, updateData)
-    //         .then(function (response) {
-    //           // console.log(response);
-    //         })
-    //         .catch(err => console.log(err));
-    //       } 
-    //       }
-    //     } else {
-    //       API.saveDate(dateData)
-    //       .then(function (response) {
-    //       // console.log(response);
-    //       })
-    //       .catch(err => console.log(err));
-    //     }
-        
-    //   })
-          // .then(res => console.log(this.state.userData))
-          // .catch(err => console.log(err));
-        API.saveDate(dateData)
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(err => console.log(err));
+    const accessToken = this.props.auth.getAccessToken();
+    
+    this.state.mealItems.forEach(mealItem => {
+      var dateData = {
+        userId: this.state.userId,
+        date: this.state.mealDate,
+        mealTitle: this.state.mealTitle,
+        foodItem: mealItem.name,
+        calories: mealItem.cal,
+        protein: mealItem.prot,
+        sugar: mealItem.sug,
+        sodium: mealItem.sod,
+        mealTotal: this.state.mealSummary
+      };    
+
+      console.log("Date data: ", dateData);
+
+      API.saveDate(accessToken, dateData)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(err => console.log(err));
+    });
   };
 
   login() {
     this.props.auth.login();
   }
+
   render() {
     const { isAuthenticated } = this.props.auth;
     return (
       <div className="container">
-        {
-          isAuthenticated() && (
-            <Container fluid>
+        {isAuthenticated() && (
+          <Container fluid>
             <Row>
-              <Col size="md-4">
-                <Jumbotron>
-                  <h1>Search</h1>
-                </Jumbotron>
-                <Search
-                    value={this.state.search}
-                    handleInputChange={this.handleInputChange}
-                    handleFormSubmit={this.handleFormSubmit}
-                  />
-              </Col>
-              <Col size="md-4 sm-12">
-                <Jumbotron>
-                  <h1>Results Display</h1>
-                </Jumbotron>
-                {this.state.result.cal
-                    ? <Results
-                      name={this.state.result.name}
-                      cal={ Math.round(this.state.result.cal * 100) / 100 }
-                      sod={ Math.round(this.state.result.sod * 100) / 100 }
-                      sug={ Math.round(this.state.result.sug * 100) / 100 }
-                      prot={ Math.round(this.state.result.prot * 100) / 100 }
-                      handleDataSave={this.handleDataSave}
-                    />
-                    : <h3>No Results to Display</h3>}
-              </Col>
-              <Col size="md-4 sm-12">
-                <Jumbotron>
-                  <h1>Calculated Total</h1>
-                </Jumbotron>
-                <DailyTable
-                  date={date}
-                  cal={ Math.round(caloriesDaily * 100) / 100 }
-                  sod={Math.round(sodiumDaily * 100) / 100}
-                  sug={Math.round(sugarDaily * 100) / 100}
-                  prot={Math.round(proteinDaily * 100) / 100}
-                  handleSaveToMongo={this.handleSaveToMongo}
-                  // handleMongoUpdate={this.handleMongoUpdate}
+              <Col size="md-12">
+                <h1>Search for food items to begin meal summary!</h1>
+                <MealTable
+                  mealItems={this.state.mealItems}
+                  mealSummary={this.state.mealSummary}
+                  saveMealData={this.saveMealData}
+                  handleInputChange={this.handleInputChange}
+                  handleDelete={this.handleDelete}
+                  handleQuantity={this.handleQuantity}
+                  value={this.state.mealTitle}
+                  quantity={this.state.quantity}
+                  open={this.collapseButton.bind(this)}
                 />
               </Col>
             </Row>
+            <Row>
+              <Collapse class='collapse' in={this.state.open}>
+                <div>
+                  <Col size="md-3 sm-12">
+                    <h1>Search</h1>
+                    <Search
+                      value={this.state.search}
+                      handleInputChange={this.handleInputChange}
+                      handleFormSubmit={this.handleFormSubmit}
+                    />
+                  </Col>
+                  <Col size="md-9 sm-12">
+                    <h1>Results Display (Avg.)</h1>
+                    {this.state.result.cal
+                      ? <Results
+                        name={this.state.result.name}
+                        cal={ Math.round(this.state.result.cal * 100) / 100 }
+                        sod={ Math.round(this.state.result.sod * 100) / 100 }
+                        sug={ Math.round(this.state.result.sug * 100) / 100 }
+                        prot={ Math.round(this.state.result.prot * 100) / 100 }
+                        addItemToMeal={this.addItemToMeal}
+                      />
+                    : <h3>No Results to Display</h3>}
+                  </Col>
+                </div>  
+              </Collapse>
+            </Row>
           </Container>
-            )
-        }
+        )}
       </div>
     );
   }

@@ -1,9 +1,9 @@
 import React from "react";
+import "./Search.css"
 
 const Search = props => (
   <form>
     <div className="form-group">
-      <label htmlFor="search">Search:</label>
       <input
         onChange={props.handleInputChange}
         value={props.value}

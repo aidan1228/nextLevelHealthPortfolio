@@ -1,0 +1,10 @@
+
+.btn {
+    background-color: mediumvioletred;
+    border: 2px solid mediumvioletred;
+}
+
+.btn:hover {
+    background-color: peachpuff;
+    border: 2px solid peachpuff;
+}

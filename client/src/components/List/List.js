@@ -1,18 +1,17 @@
 import React from "react";
 import "./List.css";
 
-export const List = ({ children }) => {
+export const List = ({ children }, props) => {
   return (
-    <div class="panel-body" id="pMargin">
-    <table class="table table-hover" id='user-table'>
+    <div className="panel-body" id="pMargin">
+    <table className="table table-hover" id='user-table'>
       <thead>
           <tr>
               <th>Date</th>
-              <th>Total Sugar</th>
-              <th>Total Protein</th>
-              <th>Total Sodium</th>
-              <th>Total Calories</th>
-              <th></th>
+              <th>Calories</th>
+              <th>Protein</th>
+              <th>Sodium</th>
+              <th>Sugar</th>
           </tr>
       </thead>
       <tbody>

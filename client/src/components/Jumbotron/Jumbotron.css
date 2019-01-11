@@ -1,0 +1,9 @@
+.jumbotron {
+    background: none;
+    background-position: center;
+    margin: 0;
+}
+
+.jumbotron h1 { 
+    text-align: center; /* centers the heading */
+  }

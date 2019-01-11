@@ -9,13 +9,22 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
+  findByUsername: function(req, res) {
+    console.log("req.params: ", req.params);
     db.Tracker
-      .findById(req.params.id)
+      .find({userId: req.params.userId})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findByDate: function(req, res) {
+    console.log("req.params: ", req.params);
+    db.Tracker
+      .find({date: new Date().toLocaleString().split(',')[0]})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   create: function(req, res) {
+    console.log("req.params: ", req.params);
     db.Tracker
       .create(req.body)
       .then(dbModel => res.json(dbModel))

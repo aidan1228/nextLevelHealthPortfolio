@@ -21,24 +21,25 @@ export default {
     return axios.get(query);
   },
   // Gets all books
-  getUserData: function() {
-    return axios.get("/api/userData");
+  getUserData: function(accessToken, username) {
+    const headers = {'Authorization': `Bearer ${accessToken}`}
+    console.log("headers: ", headers);
+    return axios.get("/api/userData/" + username, { headers });
+  },
+
+  getTodaysData: function(accessToken, username) {
+    const headers = {'Authorization': `Bearer ${accessToken}`}
+    console.log("headers: ", headers);
+    return axios.get("/api/userData/date/" + username, { headers });
   },
 
   updateDate: function(id, update) {
     console.log(id);
     return axios.put('/api/userData/' + id, update)
   },
-  // Gets the book with the given id
-  getBook: function(id) {
-    return axios.get("/api/userData/" + id);
-  },
-  // Deletes the book with the given id
-  deleteBook: function(id) {
-    return axios.delete("/api/userData/" + id);
-  },
-  // Saves a book to the database
-  saveDate: function(userData) {
-    return axios.post("/api/userData", userData);
+  
+  saveDate: function(accessToken, userData) {
+    const headers = {'Authorization': `Bearer ${accessToken}`}
+    return axios.post("/api/userData", userData, { headers });
   }
 };

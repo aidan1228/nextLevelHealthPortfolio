@@ -1,7 +1,8 @@
 const router = require("express").Router();
-const trackerRoutes = require("./tracker");
+const userDataRoutes = require("./userData");
 
-// Book routes
-router.use("/userData", trackerRoutes);
+// userData routes
+console.log("userDataRoutes: ", userDataRoutes);
+router.use("/userData", userDataRoutes);
 
 module.exports = router;

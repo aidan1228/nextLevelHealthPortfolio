@@ -8,7 +8,8 @@ export default class Auth {
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
     responseType: 'token id_token',
-    scope: 'openid profile'
+    audience: 'http://nextlevelhealth.com',
+    scope: 'openid profile read:data create:data'
   });
 
   userProfile;
@@ -57,6 +58,19 @@ export default class Auth {
       throw new Error('No access token found');
     }
     return accessToken;
+  }
+
+  getEmail(cb) {
+    let accessToken = this.getAccessToken();
+    this.auth0.client.userInfo(accessToken, (err, email) => {
+      if (email) {
+        this.userEmail = email;
+        // console.log("userId: ", email.sub);
+        // console.log("username: ", email.nickname);
+        // console.log("email: ", email.name);
+        cb(email.nickname, email.sub);
+      }
+    });
   }
 
   getProfile(cb) {
